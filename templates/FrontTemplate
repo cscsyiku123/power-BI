@@ -1,0 +1,31 @@
+com.xiaohongshu.fls.rpc.ad_data.data_outer_dto.GraphTableVo result = dataBankBusinessManager.{{method.name}}(
+    {% for param in method.params %}
+      {{param.name}}
+    {% endfor %}
+);
+return new Response(GraphTableVo.convertResult(result));
+
+
+public com.xiaohongshu.fls.rpc.ad_data.data_outer_dto.GraphTableVo {{method.name}}(
+    {% for param in method.params %}
+      {{param.type}} {{param.name}}
+    {% endfor %}
+) {
+    {{project.name}}Request req = new {{project.name}}Request();
+    req.setAudit(AccountUtil.getAuditInfo());
+    req.setBranAccountId(getBrandAccountId());
+    req.setIsAdmin(checkAdmin());
+    req.setAudit(AccountUtil.getAuditInfo());
+    {% for param in method.params %}
+      req.set{{param.name}}({{param.name}});
+    {% endfor %}
+    try {
+        DataBankContentAssetResponse rpcResponse = service.{{project.name}}{{method.name}}(contextHelper.get(),req);
+        checkResponse(rpcResponse.getResponse().isSuccess(),rpcResponse.getResponse().getMsg());
+        com.xiaohongshu.fls.rpc.ad_data.data_outer_dto.GraphTableVo result = rpcResponse.getResult();
+        return result;
+    } catch (TException e) {
+        log.error("{{project.name}}-{{method.name}}-数据获取失败: {}", e.getMessage(), e);
+        throw new ResponseStatusException(SysErrorCode.RPC_AD_DATA.getCode(),"服务繁忙，请稍后重试");
+    }
+}
