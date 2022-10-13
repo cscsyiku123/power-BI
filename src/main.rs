@@ -5,7 +5,6 @@ use properties::Property;
 
 #[macro_use]
 extern crate lazy_static;
-
 use std::io;
 use std::fs::File;
 use std::io::{BufReader, BufRead};
@@ -13,6 +12,9 @@ use std::collections::HashMap;
 use std::sync::Mutex;
 use tera::Tera;
 use tera::Context;
+extern crate serde;
+extern crate tera;
+use serde::{Serialize, Deserialize};
 
 
 
@@ -132,7 +134,7 @@ fn main() {
 
 }
 
-#[derive(Debug)]
+#[derive(Serialize,Debug)]
 struct Project {
     name: String,
 }
@@ -147,13 +149,13 @@ impl Project{
     }
 }
 
-#[derive(Serialize)]
+#[derive(Serialize,Debug)]
 struct Method {
     name: String,
     params: Vec<Param>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize,Debug)]
 struct Param {
     name: String,
     type_ :String ,
