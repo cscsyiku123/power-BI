@@ -8,7 +8,7 @@ return new Response(GraphTableVo.convertResult(result));
 
 public com.xiaohongshu.fls.rpc.ad_data.data_outer_dto.GraphTableVo {{method.name}}(
     {% for param in method.params %}
-      {{param.type}} {{param.name}}
+      {{param.type_}} {{param.name}}
     {% endfor %}
 ) {
     {{project.name}}Request req = new {{project.name}}Request();

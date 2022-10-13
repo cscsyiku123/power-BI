@@ -113,22 +113,28 @@ fn main() {
         tera
     };
     }
-// Using the tera Context struct
+    //1、 Using the tera Context struct
     let mut context = Context::new();
-    context.insert("product", &"123");
-    context.insert("vat_rate", &0.20);
+    //2、封装参数
+    let mut  project = Project::new();
+    project.setName(String::from("ContentAsset"));
+
+    //3、render
+    let method = Method {
+        name:String::from(""),
+        params:vec![Param{name:String::from("foo"), type_:String::from("String")}],
+    };
+    context.insert("project", &project);
+    context.insert("method", &method);
     let x1 = TEMPLATES.render("FrontTemplate", &context);
     println!("x1 = {:?}", x1);
 
-    let mut  project = Project::new();
-    project.setName("123");
-    println!("project = {:?}", project);
 
 }
 
-#[derive(Serialize)]
+#[derive(Debug)]
 struct Project {
-    name: &'static str,
+    name: String,
 }
 impl Project{
     fn new() -> Self {
@@ -136,7 +142,7 @@ impl Project{
             name: String::new(),
         }
     }
-    fn setName(&mut self,name: &str){
+    fn setName(&mut self,name: String){
         self.name = name;
     }
 }
