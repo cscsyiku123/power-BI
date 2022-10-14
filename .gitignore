@@ -1,1 +1,4 @@
 target/**/*
+templates/**/*
+!templates/BackTemplate
+!templates/FrontTemplate
